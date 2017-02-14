@@ -2,6 +2,9 @@
 
 Allows querying SQL based datasources like SQL Server.
 
+![SQL Plugi](https://raw.githubusercontent.com/gbrian/grafana-simple-sql-datasource/master/overview.png "Query editor")
+
+
 ## Usage
 Currently the plugin requires a proxy server running to communicate with the database.
 
@@ -37,3 +40,22 @@ Following features has been implemented
 It is possible to define two different types: `timeseries` and `table`
 
 ### Annotation
+Annotation querires must return the following fields:
+ 
+ * **title**: Annotation header
+ * **text**:  Annotation description
+ * **tags**: Annotation tags
+ * **time**: Annotation time
+
+ ## Notes
+ ### Time
+ UTC and Localtime. Currently you must specify if time returned by the query is UTC or local. 
+ The plugin will convert localtime to UTC in order to be correctly renderer.
+ ### Template
+ You can use `$from` and `$to` to refer to selected time period in your queries like:
+
+ ````
+ SELECT field FROM table WHERE datestart >= '$from' AND dateStart <= '$to'
+ ```` 
+
+ 
