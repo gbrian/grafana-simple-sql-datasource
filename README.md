@@ -47,15 +47,15 @@ Annotation querires must return the following fields:
  * **tags**: Annotation tags
  * **time**: Annotation time
 
- ## Notes
- ### Time
- UTC and Localtime. Currently you must specify if time returned by the query is UTC or local. 
- The plugin will convert localtime to UTC in order to be correctly renderer.
- ### Template
- You can use `$from` and `$to` to refer to selected time period in your queries like:
+## Notes
+### Time
+UTC and Localtime. Currently you must specify if time returned by the query is UTC or local. 
+The plugin will convert localtime to UTC in order to be correctly renderer.
+### Template
+You can use `$from` and `$to` to refer to selected time period in your queries like:
 
- ````
- SELECT field FROM table WHERE datestart >= '$from' AND dateStart <= '$to'
- ```` 
+````
+SELECT field FROM table WHERE datestart >= '$from' AND dateStart <= '$to'
+```` 
 
  
