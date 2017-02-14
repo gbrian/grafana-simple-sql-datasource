@@ -128,7 +128,7 @@ SQLProxyServer.prototype.API = function(command){
         target.timestamp = _api.internals.getTimestamp(target, results);
         target.results = results.rows.map(r => _.assignIn(r, {
                                                   annotation: target.annotation,
-                                                  time: _api.internals.utc(r[target.timestamp], target.utc).valueOf()
+                                                  time: _api.internals.utc(r[target.timestamp], target.annotation.utc).valueOf()
                                                 }));
         return target;
       },

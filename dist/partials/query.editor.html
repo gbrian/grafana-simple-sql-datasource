@@ -1,18 +1,51 @@
-<query-editor-row query-ctrl="ctrl" class="generic-datasource-query-row" has-text-edit-mode="true">
+<query-editor-row query-ctrl="ctrl" class="generic-datasource-query-row grafana-simple-sql-datasource" has-text-edit-mode="true">
   <div class="gf-form-inline">
-    <div class="gf-form max-width-8">
-      <select class="gf-form-input" ng-model="ctrl.target.type" ng-options="f as f for f in ['table', 'timeserie']"></select>
+    <div class="gf-form">
+      <select class="gf-form-input" ng-model="ctrl.target.type" ng-options="f as f for f in ['table', 'timeseries']"></select>      
     </div>
-
-    <div class="gf-form" ng-if="ctrl.target.rawQuery">
-      <textarea class="gf-form-input" rows="5" ng-model="ctrl.target.target" spellcheck="false" ng-blur="ctrl.onChangeInternal()" />
+    <!--div class="gf-form">
+      <select class="gf-form-input" ng-model="ctrl.target.cmdtype" ng-options="f as f for f in ['sql']"></select>
+    </div-->
+    <div class="gf-form">
+      <select class="gf-form-input" ng-model="ctrl.target.utc" ng-options="f as f for f in ['utc', 'localtime']"></select>      
     </div>
-
-    <div ng-if="!ctrl.target.rawQuery">
-      <div class="gf-form">
-        <metric-segment-model property="ctrl.target.target" get-options="ctrl.getOptions()" on-change="ctrl.onChangeInternal()"
-          css-class="tight-form-item-xxlarge"></metric-segment-model>
-      </div>
-    </div>
+    <textarea class="gf-form-input" ng-model="ctrl.target.target" spellcheck="false" ng-blur="ctrl.onChangeInternal()" />
+    <!--div class="gf-form raw-query">
+      <pre class="ace-sql-editor">
+          -- Raw SQL Query
+          SELECT field as metric, field1 as value, field2 as timestamp
+          FROM table
+          -- Use template, period, ... vars
+          WHERE field2 >= $from AND field2 <= $to
+              AND field3 = $templateVar
+          -- Template variable must start by $ (e.g. $myTemplateVar) 
+      </pre>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.6/ace.js" type="text/javascript" charset="utf-8"></script>
+      <script>
+          function initEditor(grafeditor){
+              var aceel = grafeditor.parent().find('.ace-sql-editor');
+              var savedQuery = grafeditor.val();
+              if(savedQuery)
+                aceel.text(savedQuery);
+              var editor = ace.edit(aceel.get(0));
+              // TODO: Check if grafana is dark or bright
+              editor.setTheme("ace/theme/clouds_midnight");
+              editor.getSession().setMode("ace/mode/sql");
+              // Mirror controls
+              editor.setValue(grafeditor.val());
+              editor.on('blur', () => {
+                grafeditor.val(editor.getValue());
+                grafeditor.trigger('change');
+                grafeditor.trigger('blur');
+              });
+              grafeditor.attr("ace", "true");
+          }
+          $(document).ready(() => {
+            $('.grafana-simple-sql-datasource textarea.gf-form-input.hidden')
+              .filter(function(ix, el){ return !$(el).attr("ace"); })
+              .each(function(ix, el){ initEditor($(el)); });
+          });
+      </script>
+    </div-->
   </div>
 </query-editor-row>

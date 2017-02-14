@@ -13,19 +13,19 @@
   "info": {
     "description": "simple sql datasource",
     "author": {
-      "name": "Based on the work from Raintank Inc.",
+      "name": "GBrian.",
       "url": ""
     },
     "logos": {
-      "small": "img/logo_small.svg",
-      "large": "img/logo_large.svg"
+      "small": "img/logo_small.png",
+      "large": "img/logo_large.png"
     },
     "links": [
       {"name": "GitHub", "url": "https://github.com/gbrian/grafana-simple-sql-datasource"},
       {"name": "MIT License", "url": "https://github.com/gbrian/grafana-simple-sql-datasource/blob/master/LICENSE"}
     ],
-    "version": "0.0.1",
-    "updated": "2017-02-02"
+    "version": "0.0.2",
+    "updated": "2017-02-14"
   },
 
   "dependencies": {
