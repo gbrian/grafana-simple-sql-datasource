@@ -59,5 +59,5 @@ SELECT field FROM table WHERE datestart >= '$from' AND dateStart <= '$to'
 ```` 
 
 ## Thanks to
-Grafana team and [@bergquist]("https://github.com/bergquist")
+Grafana team and [@bergquist](https://github.com/bergquist)
  
