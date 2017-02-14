@@ -58,4 +58,6 @@ You can use `$from` and `$to` to refer to selected time period in your queries l
 SELECT field FROM table WHERE datestart >= '$from' AND dateStart <= '$to'
 ```` 
 
+## Thanks to
+Grafana team and (@bergquist)("https://github.com/bergquist" "Carl Bergquist")
  
