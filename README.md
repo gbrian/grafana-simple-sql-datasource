@@ -12,6 +12,7 @@ Currently the plugin requires a proxy server running to communicate with the dat
 
  * Run npm install on the plugin directory
  * Run server side code `/serverside/sqlproxyserver.js`
+ * Test on your browser `http://myserver:port/?con=mssql://user:name@server/database` you must get a `{"status":"sucess"}` response
 
 **Add new datasource**
 Add a new datasource to Grafana and set the url to:
