@@ -51,6 +51,17 @@ SQLProxyServer.prototype.runStandalone = function(){
 
     app.use(bodyParser.json());
     var oThis = this;
+    var err = (message) => res.status(500).send(message);
+    app.get("/", function(req, res){
+      if(!req.query.con){
+        return err("Missing parameter `con` with connection details. "
+        + "Example: con=mssql://user:user@pass\SERVER/database");
+      }
+      oThis.execCommand({url: req.query.con, type:'test'})
+        .then(data => res.send(data))
+        .catch(err => 
+          res.status(500).send(err));
+    });
     app.post("/*", function(req, res){
       oThis.execCommand(req.body)
         .then(data => res.send(data))
