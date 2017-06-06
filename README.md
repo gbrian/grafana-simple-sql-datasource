@@ -9,9 +9,10 @@ Allows querying SQL based datasources like SQL Server.
 Currently the plugin requires a proxy server running to communicate with the database.
 
 **Install sqlproxyserver**
-
+ 
+ * Run `npm install` at the `dist/serverside` folder to install all dependencies
  * Run npm install on the plugin directory
- * Run server side code `/serverside/sqlproxyserver.js`
+ * Run server side code `dist/serverside/sqlproxyserver.js`
  * Test on your browser `http://myserver:port/?con=mssql://user:name@server/database` you must get a `{"status":"sucess"}` response
 
 **Add new datasource**
