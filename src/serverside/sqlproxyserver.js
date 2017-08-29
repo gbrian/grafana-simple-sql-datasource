@@ -37,7 +37,6 @@ SQLProxyServer.prototype.execCommand = function(req){
 SQLProxyServer.prototype.runStandalone = function(){
     var express = require('express');
     var bodyParser = require('body-parser');
-    
     var app = express();
     
     app.use((req, res, next)=>{
@@ -49,7 +48,10 @@ SQLProxyServer.prototype.runStandalone = function(){
         return next();
     });
 
-    app.use(bodyParser.json());
+    app.use(bodyParser.json({
+      strict: false,
+      type: '*/*'    
+    }));
     var oThis = this;
     app.get("/", function(req, res){
       if(!req.query.con){
@@ -104,7 +106,17 @@ SQLProxyServer.prototype.API = function(command){
     }
     
     _api.search = function(){
-      
+      /**
+       * Example array response
+       * ["upper_25","upper_50","upper_75","upper_90","upper_95"]
+       * Example map response
+       * [ { "text" :"upper_25", "value": 1}, { "text" :"upper_75", "value": 2} ]
+       */
+      _api.cmd.body.targets = [{
+        target: _api.cmd.body.target,
+        type: 'search'
+      }];
+      return _api.query();
     }
     
     _api.annotations = function(){
@@ -132,7 +144,21 @@ SQLProxyServer.prototype.API = function(command){
             return _api.internals.try(() => _api.internals.parseTable(target, results));
         if(target.type == "annotations")
           return _api.internals.try(() => _api.internals.parseAnnotations(target, results));
+        if(target.type == "search")
+          return _api.internals.try(() => _api.internals.parseSearch(target, results));
         return "Unsupported response type: " + target.type;  
+      },
+      parseSearch: (target, results) => {
+        var mapped = Object.keys(results.columns).length > 1;
+        if(mapped){
+          var textColumn = _api.internals.getColumn('text', target, results);
+          var valueColumn = _api.internals.getColumn('value', target, results);
+          target.results = results.rows.map(r => ({ "text" :r[textColumn], "value": r[valueColumn]}));
+        }else{
+          var col = Object.keys(results.columns)[0];
+          target.results = results.rows.map(r => r[col]);
+        }
+        return target;
       },
       parseAnnotations: (target, results) => {
         target.timestamp = _api.internals.getTimestamp(target, results);
@@ -198,6 +224,12 @@ SQLProxyServer.prototype.API = function(command){
                         k == target.value ? 1000:
                           k.toLowerCase() == 'value' ? 100:
                             [target.timestamp, target.metric].indexOf(k.toLowerCase()) == -1  ? 1: 0)
+      },
+      getColumn: (column, target, results)=>{
+        return _api.internals.getSpecialColumn(results, (k, type) => 
+                        k == target.metric ? 1000:
+                          [column].indexOf(k.toLowerCase()) != -1  ? 100:
+                          type == 'text' || type.indexOf('char') != -1 ? 1: 0)
       },
       getSpecialColumn: (results, score)=>{
         return _.orderBy(Object.keys(results.columns)
