@@ -64,6 +64,7 @@ SQLProxyServer.prototype.runStandalone = function(){
           res.status(500).send(err));
     });
     app.post("/*", function(req, res){
+      req.body.url = req.body.url || req.query.con;
       oThis.execCommand(req.body)
         .then(data => res.send(data))
         .catch(err => 
