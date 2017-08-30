@@ -17,7 +17,7 @@ Currently the plugin requires a proxy server running to communicate with the dat
 Add a new datasource to Grafana and set the url to:
 
 ````
-http://myserver:port/?con=mssql://user:name@server/database
+http://myserver:port/con=mssql://user:name@server/database
 ````
 
 Where:
