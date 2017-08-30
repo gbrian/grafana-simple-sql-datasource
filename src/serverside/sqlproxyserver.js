@@ -33,7 +33,10 @@ SQLProxyServer.prototype.execCommand = function(req){
     return this.loadAPI(req)
             .then(api => api.execute());
   }
-
+SQLProxyServer.prototype.getConnection = function(req){
+    var consrc = [/con\=(.*)/.exec(req.url)[1], req.query.con, req.body.url];
+    req.body.url = consrc.filter(s => s)[0];
+  }
 SQLProxyServer.prototype.runStandalone = function(){
     var express = require('express');
     var bodyParser = require('body-parser');
@@ -54,6 +57,7 @@ SQLProxyServer.prototype.runStandalone = function(){
     }));
     var oThis = this;
     app.get("/", function(req, res){
+      oThis.getConnection(req);
       if(!req.query.con){
         return res.status(500).send("Missing parameter `con` with connection details. "
         + "Example: con=mssql://dbuser:dbpwd@sqlserver/databasename");
@@ -64,7 +68,7 @@ SQLProxyServer.prototype.runStandalone = function(){
           res.status(500).send(err));
     });
     app.post("/*", function(req, res){
-      req.body.url = req.body.url || req.query.con;
+      oThis.getConnection(req);
       oThis.execCommand(req.body)
         .then(data => res.send(data))
         .catch(err => 
