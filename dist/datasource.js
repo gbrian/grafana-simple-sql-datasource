@@ -136,18 +136,18 @@ System.register(["lodash"], function (_export, _context) {
           value: function buildQueryParameters(options) {
             var _this = this;
 
-            //remove placeholder targets
-            var targets = _.filter(options.targets, function (target) {
+            var clonedOptions = _.cloneDeep(options);
+            var targets = _.filter(clonedOptions.targets, function (target) {
               return target.target !== 'select metric' && !target.hide;
             });
 
             targets = _.map(targets, function (target) {
-              return _.assignIn(target, { target: _this.templateSrv.replace(target.target) });
+              return _.assignIn(target, { target: _this.templateSrv.replace(target.target, options.scopedVars, "distributed") });
             });
 
-            options.targets = targets;
+            clonedOptions.targets = targets;
 
-            return options;
+            return clonedOptions;
           }
         }]);
 

@@ -91,15 +91,15 @@ export class GenericDatasource {
   }
 
   buildQueryParameters(options) {
-    //remove placeholder targets
-    var targets = _.filter(options.targets, target => 
+    var clonedOptions = _.cloneDeep(options);
+    var targets = _.filter(clonedOptions.targets, target => 
       target.target !== 'select metric' && !target.hide);
 
     targets = _.map(targets, target => 
-      _.assignIn(target, { target: this.templateSrv.replace(target.target)}));
+      _.assignIn(target, { target: this.templateSrv.replace(target.target, options.scopedVars, "distributed")}));
 
-    options.targets = targets;
+    clonedOptions.targets = targets;
 
-    return options;
+    return clonedOptions;
   }
 }
