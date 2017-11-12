@@ -29,7 +29,7 @@
     "grunt-execute": "~0.2.2",
     "grunt-contrib-clean": "~0.6.0",
     "prunk": "~1.2.1",
-    "q": "~1.4.1",
+    "q": "^1.4.1",
     "chai": "~3.5.0"
   },
   "dependencies": {
