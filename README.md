@@ -63,3 +63,4 @@ SELECT field FROM table WHERE datestart >= '$from' AND dateStart <= '$to'
 ## Thanks to
 Grafana team and [@bergquist](https://github.com/bergquist)
  
+## *Powered by <a href="https://github.com/gbrian/repofunding">@repofunding*<img src="https://avatars1.githubusercontent.com/u/38230168?s=460&v=4" width="32" height="32"/></a>
