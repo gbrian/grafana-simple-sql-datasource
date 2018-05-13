@@ -1,3 +1,4 @@
+[![repofunding](https://img.shields.io/badge/powered%20by-repofunding-green.svg)](https://github.com/gbrian/repofunding) [![](https://img.shields.io/badge/support-5€-lightgray.svg)](https://www.paypal.me/repofunding/5)
 # grafana-simple-sql-datasource
 
 Allows querying SQL based datasources like SQL Server.
