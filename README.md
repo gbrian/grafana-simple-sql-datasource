@@ -58,8 +58,53 @@ The plugin will convert localtime to UTC in order to be correctly renderer.
 You can use `$from` and `$to` to refer to selected time period in your queries like:
 
 ````
-SELECT field FROM table WHERE datestart >= '$from' AND dateStart <= '$to'
+select 'Metric Name' as metric, -- Use a literal or group by a column for the labels
+		count(*) as hits, -- Just counting occurrences
+		ts as [timestamp]
+from (
+	Select dbo.scale_interval(dateColumn, '$Interval') as ts -- scale datetime to $Interval (e.g. 10m)
+	from myTable
+	where dateColumn >= '$from' and dateColumn < '$to'
+) T
+group by ts
+order by ts asc
 ```` 
+
+### MISC
+#### scale_interval
+Simple TSQL to group series by an interval
+
+````
+ALTER FUNCTION scale_interval 
+(
+	-- Add the parameters for the function here
+	@dt as datetime, @interval as varchar(100)
+)
+RETURNS DateTime
+AS
+BEGIN
+	DECLARE @amount int = 10
+
+	IF  CHARINDEX('m', @interval) <> 0
+	BEGIN
+		SET @amount = CAST(REPLACE(@interval, 'm', '') as int)
+		return dateadd(minute, datediff(mi, 0, @dt) / @amount * @amount, 0)
+	END
+	IF CHARINDEX('h', @interval) <> 0
+	BEGIN
+		SET @amount = CAST(REPLACE(@interval, 'h', '') as int)
+		return dateadd(hour, datediff(hour, 0, @dt) / @amount * @amount, 0)
+	END
+	IF CHARINDEX('d', @interval) <> 0
+	BEGIN
+		SET @amount = CAST(REPLACE(@interval, 'd', '') as int)
+		return dateadd(day, datediff(day, 0, @dt) / @amount * @amount, 0) 
+	END
+	RETURN NULL
+END
+GO
+````
+
 
 ## Thanks to
 Grafana team and [@bergquist](https://github.com/bergquist)
