@@ -1,0 +1,10 @@
+[Unit]
+Description=grafana-simple-sql-datasource
+After=network.target
+
+[Service]
+ExecStart=/usr/bin/node /var/lib/grafana/plugins/grafana-simple-sql-datasource-master/dist/serverside/sqlproxyserver.js
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
